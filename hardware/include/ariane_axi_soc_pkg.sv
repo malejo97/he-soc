@@ -33,6 +33,11 @@ package ariane_axi_soc;
     typedef logic [StrbWidth-1:0] strb_t;
     typedef logic [UserWidth-1:0] user_t;
 
+    // AXI DVM extension for IOMMU
+    typedef logic [23:0] iommu_sid_t;
+    typedef logic        iommu_ssidv_t;
+    typedef logic [19:0] iommu_ssid_t;
+
     // AW Channel
     typedef struct packed {
         id_t              id;
@@ -79,6 +84,25 @@ package ariane_axi_soc;
         axi_pkg::atop_t   atop;
         user_t            user;
     } aw_chan_slv_mem_t;
+
+    // AW Channel - AXI DVM extension for IOMMU
+    typedef struct packed {
+        id_t              id;
+        addr_t            addr;
+        axi_pkg::len_t    len;
+        axi_pkg::size_t   size;
+        axi_pkg::burst_t  burst;
+        logic             lock;
+        axi_pkg::cache_t  cache;
+        axi_pkg::prot_t   prot;
+        axi_pkg::qos_t    qos;
+        axi_pkg::region_t region;
+        axi_pkg::atop_t   atop;
+        user_t            user;
+        iommu_sid_t         stream_id;
+        iommu_ssidv_t       ss_id_valid;
+        iommu_ssid_t        substream_id;
+    } aw_chan_iommu_t;
 
     // W Channel - AXI4 doesn't define a wid
     typedef struct packed {
@@ -152,6 +176,24 @@ package ariane_axi_soc;
         axi_pkg::region_t region;
         user_t            user;
     } ar_chan_slv_mem_t;
+
+    // AR Channel - AXI DVM extension for IOMMU
+    typedef struct packed {
+        id_t              id;
+        addr_t            addr;
+        axi_pkg::len_t    len;
+        axi_pkg::size_t   size;
+        axi_pkg::burst_t  burst;
+        logic             lock;
+        axi_pkg::cache_t  cache;
+        axi_pkg::prot_t   prot;
+        axi_pkg::qos_t    qos;
+        axi_pkg::region_t region;
+        user_t            user;
+        iommu_sid_t         stream_id;
+        iommu_ssidv_t       ss_id_valid;
+        iommu_ssid_t        substream_id;
+    } ar_chan_iommu_t;
 
     // R Channel
     typedef struct packed {
@@ -244,6 +286,17 @@ package ariane_axi_soc;
         r_chan_slv_mem_t  r;
     } resp_slv_mem_t;
 
+    // AXI DVM extension for IOMMU
+    typedef struct packed {
+        aw_chan_iommu_t   aw;
+        logic           aw_valid;
+        w_chan_t        w;
+        logic           w_valid;
+        logic           b_ready;
+        ar_chan_iommu_t   ar;
+        logic           ar_valid;
+        logic           r_ready;
+    } req_iommu_t;
 
     localparam LiteAddrWidth = 32;
     localparam LiteDataWidth = 32;
