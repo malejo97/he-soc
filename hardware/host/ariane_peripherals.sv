@@ -23,7 +23,9 @@ module ariane_peripherals
     parameter  bit InclSPI      = 0,
     parameter  bit InclEthernet = 1,
     parameter  bit InclGPIO     = 0,
-    parameter  bit InclTimer    = 1
+    parameter  bit InclTimer    = 1,
+    parameter  bit InclDMA      = 0,
+    parameter  bit InclIOMMU    = 0
 ) (
     input  logic                          clk_i           , // Clock
     input  logic                          rst_ni          , // Asynchronous reset active low
