@@ -105,7 +105,7 @@ module ariane_peripherals
     assign irq_sources[148]                          = pwm_irq_i[6];
     assign irq_sources[149]                          = pwm_irq_i[7];
 
-    assign irq_sources[ariane_soc::NumSources-1:150] = '0;
+    assign irq_sources[ariane_soc::NumSources-1:154] = '0;
 
     REG_BUS #(
         .ADDR_WIDTH ( 32 ),
@@ -898,7 +898,7 @@ module ariane_peripherals
         .prog_req_i			  ( axi_iommu_cfg_req		    ),
         .prog_resp_o		  ( axi_iommu_cfg_rsp		    ),
 
-        .wsi_wires_o 		  ( irq_sources[(ariane_soc::IOMMUNumWires-1)+150:150] )
+        .wsi_wires_o 		  ( irq_sources[153:150]    )
       );
   
     //-----------
